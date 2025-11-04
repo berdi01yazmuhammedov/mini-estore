@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "WAKA SoPro PA10000 Blue Razz Ice",
+    "brand": "WAKA",
+    "flavor": "Blue Razz Ice",
+    "strength": "5%",
+    "puffs": 10000,
+    "price": 890,
+    "image": "/images/waka-blue-razz.jpg",
+    "description": "Освежающий вкус голубики с лёгким холодком."
+  },
+  {
+    "id": 2,
+    "name": "Lost Mary BM600 Strawberry Kiwi",
+    "brand": "Lost Mary",
+    "flavor": "Strawberry Kiwi",
+    "strength": "2%",
+    "puffs": 600,
+    "price": 750,
+    "image": "/images/lostmary-strawberry-kiwi.jpg",
+    "description": "Сладкий клубнично-кивовый вкус с мягким послевкусием."
+  }
+]
+

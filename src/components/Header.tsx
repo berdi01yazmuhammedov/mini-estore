@@ -2,7 +2,7 @@ import {ThemeToggle} from './ThemeToggle';
 
 const Header = () => {
     return (
-        <header className="flex items-center justify-between p-4 bg-gray-300 text-gray-800 dark:bg-gray-800 dark:text-gray-200 gap-10">
+        <header className="flex items-center justify-between p-4 gap-10">
             <h1 className='flex-1'>Mini-estore</h1>
             <nav >
                 <ul className="flex gap-10">

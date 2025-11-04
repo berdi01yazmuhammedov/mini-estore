@@ -1,18 +1,20 @@
 import { createRoot } from 'react-dom/client';
-import "./index.css";
+import './index.css';
 import App from './App.tsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout.tsx';
-
+import { Provider } from 'react-redux';
+import { store } from './store/index.ts';
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-        <Routes>
-            <Route element={<Layout />}>
-                <Route path="/" element={<App />} />
-                <Route path="*" element={<h1>404</h1>} /> // ADD NOT FOUND PAGE
-                
-            </Route>
-        </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Routes>
+                <Route element={<Layout />}>
+                    <Route path="/" element={<App />} />
+                    <Route path="*" element={<h1>404</h1>} /> // ADD NOT FOUND PAGE
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    </Provider>
 );
