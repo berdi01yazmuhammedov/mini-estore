@@ -1,0 +1,6 @@
+| Никотин | Strength label |
+| ------- | -------------- |
+| 0–1%    | "Light"        |
+| 1.2–2%  | "Medium"       |
+| 2–5%    | "Strong"       |
+| 5%+     | "Extra Strong" |

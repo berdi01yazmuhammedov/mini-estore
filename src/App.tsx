@@ -17,10 +17,11 @@ function App() {
     const renderedVapes = vapes.map((vape) => {
         return (
             <div key={vape.id} className="flex flex-col items-center gap-4 max-w-[300px]">
-                <Heart className="text-gray-800 dark:text-gray-200" />
+                <Heart className="text-red-800 dark:text-red-400" />
                 <img src={vape.image} alt={vape.name} />
                 <h4>{vape.name}</h4>
-                <h5>{vape.price}</h5>
+                <h5>{vape.flavor}</h5>
+                <h6>{vape.price}</h6>
                 <Button>Add to cart</Button>
             </div>
         );
