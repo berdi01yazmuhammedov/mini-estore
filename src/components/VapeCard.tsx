@@ -1,5 +1,5 @@
 import { Button } from '@radix-ui/themes';
-import { Heart } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
 import type { Vape as VapeType } from '../types/vape';
 
 interface Props {
@@ -46,9 +46,9 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
             <div className="p-2 bg-gradient-to-t from-white via-white/90 dark:from-zinc-900 dark:via-zinc-900/80">
                 <Button
                     size="2"
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors duration-300"
+                    className="w-full  !cursor-pointer bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors duration-300"
                 >
-                    Добавить
+                    <ShoppingCart />
                 </Button>
             </div>
         </div>
