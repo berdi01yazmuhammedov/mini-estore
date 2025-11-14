@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import vapeSlice from "./vapeSlice";
+import cartSlice from "./cartSlice";
 export const store = configureStore({
     reducer: {
-        vapes: vapeSlice
+        vapes: vapeSlice,
+        cart: cartSlice
     }
 })
 

@@ -4,6 +4,8 @@ export interface Vape {
     brand: string;
     flavor: string;
     strength: string;
+    stock: number;
+    quantity: number;
     puffs: number;
     price: number;
     image: string;

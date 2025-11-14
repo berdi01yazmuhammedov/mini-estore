@@ -1,12 +1,17 @@
-import { Button } from '@radix-ui/themes';
 import { Heart, ShoppingCart } from 'lucide-react';
-import type { Vape as VapeType } from '../types/vape';
+import type { Vape, Vape as VapeType } from '../types/vape';
+import { Button } from './ui/button';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { addToCart, removeOneFromCart } from '@/store/cartSlice';
 
 interface Props {
     vape: VapeType;
 }
 
 const VapeCard: React.FC<Props> = ({ vape }) => {
+    const dispatch = useAppDispatch();
+    const cartItem = useAppSelector((state) => state.cart.items.find((i) => i.id === vape.id));
+
     return (
         <div
             key={vape.id}
@@ -22,7 +27,6 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
             <button className="absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-zinc-800/70 hover:scale-110 transition-transform duration-200">
                 <Heart className="w-4 h-4 text-gray-600 dark:text-gray-300" />
             </button>
-
             <div className="w-full h-[180px] sm:h-[200px] flex items-center justify-center p-2">
                 <img
                     src={vape.image}
@@ -30,7 +34,6 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
                     className="object-contain max-h-full transition-transform duration-300 hover:scale-105"
                 />
             </div>
-
             <div className="flex flex-col items-start w-full px-3 pb-3 text-left">
                 <h4 className="font-medium text-sm sm:text-base text-gray-800 dark:text-gray-200 truncate">
                     {vape.name}
@@ -42,14 +45,25 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
                     {vape.price} ₽
                 </h5>
             </div>
+            <div className="w-full flex justify-center pb-3">
+                {!cartItem ? (
+                    <Button onClick={() => dispatch(addToCart(vape))}>
+                        <ShoppingCart />
+                    </Button>
+                ) : (
+                    <div className="flex items-center gap-2">
+                        <Button onClick={() => dispatch(removeOneFromCart(vape.id))}>−</Button>
 
-            <div className="p-2 bg-gradient-to-t from-white via-white/90 dark:from-zinc-900 dark:via-zinc-900/80">
-                <Button
-                    size="2"
-                    className="w-full  !cursor-pointer bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors duration-300"
-                >
-                    <ShoppingCart />
-                </Button>
+                        <span className="font-semibold">{cartItem.quantity}</span>
+
+                        <Button
+                            disabled={cartItem.quantity >= vape.stock}
+                            onClick={() => dispatch(addToCart(vape))}
+                        >
+                            +
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );

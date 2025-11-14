@@ -1,4 +1,3 @@
-import { Spinner } from '@radix-ui/themes';
 
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { useEffect } from 'react';
@@ -8,11 +7,12 @@ import VapeCard from './components/VapeCard.tsx';
 function App() {
     const dispatch = useAppDispatch();
     const { vapes, isLoading, error } = useAppSelector((state) => state.vapes);
-
+    const { items } = useAppSelector((state) => state.cart);
+    
     useEffect(() => {
         dispatch(fetchVapes());
     }, [dispatch]);
-    if (isLoading) return <Spinner>Loading...</Spinner>;
+    if (isLoading) return <h2>Loading...</h2>
     if (error) return <p>Error: {error}</p>;
 
     return (
