@@ -7,7 +7,6 @@ import VapeCard from './components/VapeCard.tsx';
 function App() {
     const dispatch = useAppDispatch();
     const { vapes, isLoading, error } = useAppSelector((state) => state.vapes);
-    const { items } = useAppSelector((state) => state.cart);
     
     useEffect(() => {
         dispatch(fetchVapes());

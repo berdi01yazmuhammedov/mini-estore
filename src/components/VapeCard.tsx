@@ -1,5 +1,5 @@
 import { Heart, ShoppingCart } from 'lucide-react';
-import type { Vape, Vape as VapeType } from '../types/vape';
+import type {  Vape as VapeType } from '../types/vape';
 import { Button } from './ui/button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addToCart, removeOneFromCart } from '@/store/cartSlice';
