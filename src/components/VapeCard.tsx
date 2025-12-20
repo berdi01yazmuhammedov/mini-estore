@@ -1,8 +1,9 @@
 import { Heart, ShoppingCart } from 'lucide-react';
-import type {  Vape as VapeType } from '../types/vape';
+import type { Vape as VapeType } from '../types/vape';
 import { Button } from './ui/button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addToCart, removeOneFromCart } from '@/store/cartSlice';
+import { Link } from 'react-router-dom';
 
 interface Props {
     vape: VapeType;
@@ -46,23 +47,29 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
                 </h5>
             </div>
             <div className="w-full flex justify-center pb-3">
-                {!cartItem ? (
+                {cartItem ? (
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="flex items-center gap-2">
+                            <Button onClick={() => dispatch(removeOneFromCart(vape.id))}>−</Button>
+
+                            <span className="font-semibold">{cartItem.quantity}</span>
+
+                            <Button
+                                disabled={cartItem.quantity >= vape.stock}
+                                onClick={() => dispatch(addToCart(vape))}
+                            >
+                                +
+                            </Button>
+                        </div>
+                        <Link className="cursor-pointer rounded-md bg-secondary py-2 px-4 hover:bg-secondary/80" to={'/cart'}>
+                            Перейти в корзину
+                        </Link>
+                    </div>
+                ) : (
                     <Button onClick={() => dispatch(addToCart(vape))}>
+                        Добавить в корзину
                         <ShoppingCart />
                     </Button>
-                ) : (
-                    <div className="flex items-center gap-2">
-                        <Button onClick={() => dispatch(removeOneFromCart(vape.id))}>−</Button>
-
-                        <span className="font-semibold">{cartItem.quantity}</span>
-
-                        <Button
-                            disabled={cartItem.quantity >= vape.stock}
-                            onClick={() => dispatch(addToCart(vape))}
-                        >
-                            +
-                        </Button>
-                    </div>
                 )}
             </div>
         </div>

@@ -3,6 +3,8 @@ import CartItem from '@/components/CartItem';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Button } from '@/components/ui/button';
 import { clearCart } from '@/store/cartSlice';
+import { Link } from 'react-router-dom';
+import Order from '@/components/Order';
 
 const CartPage = () => {
     const dispatch = useAppDispatch();
@@ -13,28 +15,39 @@ const CartPage = () => {
     }, [cart]);
 
     return (
-        <div className="w-2/3 mx-auto flex flex-col gap-10">
-            {cart.map((item) => (
-                <CartItem key={item.id} item={item} />
-            ))}
+        <div className="w-full px-10 mx-auto">
             {!cart.length ? (
-                <p className='text-center'>Корзина пуста</p>
+                <div className="flex flex-col gap-5">
+                    <p className="text-center">Корзина пуста</p>
+                    <Link
+                        to="/"
+                        className="w-[150px] py-2 px-2 border-2 border-dashed rounded-md text-center mx-auto hover:bg-gray-200 hover:text-black"
+                    >
+                        Перейти к покупкам
+                    </Link>
+                </div>
             ) : (
-                <>
-                    <div className="flex justify-center gap-30">
-                        <h3>Всего</h3>
-                        <p>{total} ₽</p>
+                <div className="flex justify-center gap-10">
+                    <div>
+                        <div className="w-full mx-auto">
+                            {cart.map((item) => (
+                                <CartItem key={item.id} item={item} total={total} />
+                            ))}
+                        </div>
+                        <div className="flex justify-center gap-30 py-5">
+                            <h3>Всего</h3>
+                            <p>{total} ₽</p>
+                            <Button
+                                size={'sm'}
+                                onClick={() => dispatch(clearCart())}
+                                variant="destructive"
+                            >
+                                Очистить корзину
+                            </Button>
+                        </div>
                     </div>
-                    <div className="flex justify-end">
-                        <Button
-                            className="w-[150px]"
-                            onClick={() => dispatch(clearCart())}
-                            variant="destructive"
-                        >
-                            Очистить корзину
-                        </Button>
-                    </div>
-                </>
+                    <Order />
+                </div>
             )}
         </div>
     );

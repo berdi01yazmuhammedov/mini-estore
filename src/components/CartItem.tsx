@@ -6,22 +6,24 @@ import { addToCart, removeItem, removeOneFromCart } from '@/store/cartSlice';
 
 interface Props {
     item: Vape;
+    total: number;
 }
 
-const CartItem = ({ item}: Props) => {
+
+const CartItem = ({ item, total }: Props) => {
     const dispatch = useAppDispatch();
     const cartItem = useAppSelector((state) => state.cart.items.find((i) => i.id === item.id));
 
     if (!cartItem) return null;
 
     return (
-        <div className="w-2/3 mx-auto flex items-center gap-4 p-4 border-b dark:border-zinc-700">
+        <div className="w-full flex items-center gap-4 p-4 border-b dark:border-zinc-700">
             <img src={item.image} className="w-20 h-20 object-contain" alt={item.name} />
 
             <div className="flex-1">
                 <h3 className="font-medium">{item.name}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{item.flavor}</p>
-                <p className="font-semibold mt-1">{item.price} ₽</p>
+                <p className="font-semibold mt-1">{total} ₽</p>
             </div>
 
             <div className="flex items-center gap-2">

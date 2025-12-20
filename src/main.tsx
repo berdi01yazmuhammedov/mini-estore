@@ -6,6 +6,7 @@ import Layout from './components/Layout.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/index.ts';
 import CartPage from './pages/CartPage.tsx';
+import PayPage from './pages/PayPage.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
@@ -13,7 +14,8 @@ createRoot(document.getElementById('root')!).render(
             <Routes>
                 <Route element={<Layout />}>
                     <Route path="/" element={<App />} />
-                    <Route path='cart' element={<CartPage />} />
+                    <Route path='/cart' element={<CartPage />} />
+                    <Route path="/pay" element={<PayPage />} />
                     <Route path="*" element={<h1>404</h1>} /> // ADD NOT FOUND PAGE
                 </Route>
             </Routes>
