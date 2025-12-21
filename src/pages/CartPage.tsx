@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import CartItem from '@/components/CartItem';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { Button } from '@/components/ui/button';
@@ -30,7 +29,7 @@ const CartPage = () => {
                     <div>
                         <div className="w-full mx-auto">
                             {cart.map((item) => (
-                                <CartItem key={item.id} item={item} total={totalPrice} />
+                                <CartItem key={item.id} item={item} />
                             ))}
                         </div>
                         <div className="flex justify-center gap-30 py-5">
