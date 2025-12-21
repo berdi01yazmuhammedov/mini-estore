@@ -6,11 +6,10 @@ import { addToCart, removeItem, removeOneFromCart } from '@/store/cartSlice';
 
 interface Props {
     item: Vape;
-    total: number;
 }
 
 
-const CartItem = ({ item, total }: Props) => {
+const CartItem = ({ item }: Props) => {
     const dispatch = useAppDispatch();
     const cartItem = useAppSelector((state) => state.cart.items.find((i) => i.id === item.id));
 
@@ -23,7 +22,7 @@ const CartItem = ({ item, total }: Props) => {
             <div className="flex-1">
                 <h3 className="font-medium">{item.name}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{item.flavor}</p>
-                <p className="font-semibold mt-1">{total} ₽</p>
+                <p className="font-semibold mt-1">{item.price} ₽</p>
             </div>
 
             <div className="flex items-center gap-2">

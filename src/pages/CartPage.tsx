@@ -5,14 +5,13 @@ import { Button } from '@/components/ui/button';
 import { clearCart } from '@/store/cartSlice';
 import { Link } from 'react-router-dom';
 import Order from '@/components/Order';
+import { useCartTotals } from '@/hooks/useCartTotals';
 
 const CartPage = () => {
     const dispatch = useAppDispatch();
     const cart = useAppSelector((state) => state.cart.items);
 
-    const total = useMemo(() => {
-        return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    }, [cart]);
+    const { totalPrice } = useCartTotals(cart);
 
     return (
         <div className="w-full px-10 mx-auto">
@@ -31,12 +30,12 @@ const CartPage = () => {
                     <div>
                         <div className="w-full mx-auto">
                             {cart.map((item) => (
-                                <CartItem key={item.id} item={item} total={total} />
+                                <CartItem key={item.id} item={item} total={totalPrice} />
                             ))}
                         </div>
                         <div className="flex justify-center gap-30 py-5">
                             <h3>Всего</h3>
-                            <p>{total} ₽</p>
+                            <p>{totalPrice} ₽</p>
                             <Button
                                 size={'sm'}
                                 onClick={() => dispatch(clearCart())}
@@ -46,7 +45,7 @@ const CartPage = () => {
                             </Button>
                         </div>
                     </div>
-                    <Order />
+                    <Order cart={cart}/>
                 </div>
             )}
         </div>
