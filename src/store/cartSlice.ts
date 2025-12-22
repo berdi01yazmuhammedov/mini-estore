@@ -1,11 +1,12 @@
 import type { Vape } from '@/types/vape';
+import { loadCart } from '@/utils/cartStorage';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface CartState {
     items: Vape[];
 }
 const initialState: CartState = {
-    items: [],
+    items: loadCart(),
 };
 
 const cartSlice = createSlice({
@@ -22,6 +23,7 @@ const cartSlice = createSlice({
             } else {
                 state.items.push({ ...action.payload, quantity: 1 });
             }
+            
         },
         removeOneFromCart(state, action: PayloadAction<number>) {
             const existing = state.items.find((i) => i.id === action.payload);
@@ -31,6 +33,7 @@ const cartSlice = createSlice({
             } else {
                 state.items = state.items.filter((item) => item.id !== action.payload);
             }
+            
         },
         removeItem(state, action){
             state.items = state.items.filter(i => i.id !== action.payload)
