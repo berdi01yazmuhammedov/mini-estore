@@ -4,8 +4,9 @@ import { useState } from 'react';
 interface OrderProps {
     cart: Vape[];
 }
+type PickupType = 'Самовывоз' | 'Доставка';
 const Order: React.FC<OrderProps> = ({ cart }) => {
-    const {totalPrice} = useCartTotals(cart);
+    const { totalPrice } = useCartTotals(cart);
     const orderItems = cart.map((vape: Vape) => {
         return {
             id: vape.id,
@@ -15,23 +16,34 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
         };
     });
 
-    const [isPickup, setIsPickup] = useState('Самовывоз');
+    const [isPickup, setIsPickup] = useState<PickupType>('Самовывоз');
     const [contactType, setContactType] = useState<'telegram' | 'email'>('telegram');
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handlePickupChange = (type: PickupType) => {
+        setIsPickup(type);
+        if (type === 'Самовывоз') {
+            setAddress('');
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const orderData = {
-            orderItems,
-            totalPrice,
-            isPickup,
-            contactType,
+            items: orderItems,
             contact,
-            address,
-            createdAt: new Date().toISOString(),
+            contactType,
+            isPickup,
+            address: isPickup === 'Доставка' ? address : null,
         };
-        console.log('ORDER:', orderData);
+        await fetch('http://localhost:3001/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        });
     };
     return (
         <div className="mx-auto">
@@ -47,13 +59,13 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                 <h2 className="mt-4">Выберите способ получения</h2>
                 <div className="mt-2 flex gap-4">
                     <button
-                        onClick={() => setIsPickup('Самовывоз')}
+                        onClick={() => handlePickupChange('Самовывоз')}
                         className={`py-2 px-2 border-2 rounded-md cursor-pointer hover:bg-secondary/80 ${isPickup === 'Самовывоз' ? 'isPickup' : ''}`}
                     >
                         Самовывоз
                     </button>
                     <button
-                        onClick={() => setIsPickup('Доставка')}
+                        onClick={() => handlePickupChange('Доставка')}
                         className={`py-2 px-2 border-2 rounded-md cursor-pointer hover:bg-secondary/80 ${isPickup === 'Доставка' ? 'isPickup' : ''}`}
                     >
                         Доставка
