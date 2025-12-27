@@ -8,6 +8,8 @@ import { store } from './store/index.ts';
 import CartPage from './pages/CartPage.tsx';
 import PayPage from './pages/PayPage.tsx';
 import AdminPage from './pages/AdminPage.tsx';
+import AddVape from './components/admin/AddVape.tsx';
+import VapeList from './components/admin/VapeList.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
@@ -15,9 +17,12 @@ createRoot(document.getElementById('root')!).render(
             <Routes>
                 <Route element={<Layout />}>
                     <Route path="/" element={<App />} />
-                    <Route path='/cart' element={<CartPage />} />
+                    <Route path="/cart" element={<CartPage />} />
                     <Route path="/pay" element={<PayPage />} />
-                    <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/admin" element={<AdminPage />}>
+                        <Route path="add" element={<AddVape />} />
+                        <Route path="list" element={<VapeList />} />
+                    </Route>
                     <Route path="*" element={<h1>404</h1>} /> // ADD NOT FOUND PAGE
                 </Route>
             </Routes>

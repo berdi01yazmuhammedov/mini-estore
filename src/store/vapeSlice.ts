@@ -3,10 +3,11 @@ import type { Vape } from '../types/vape';
 import axios from 'axios';
 export const fetchVapes = createAsyncThunk('fetchVapes', async () => {
     try {
-        const res = await axios.get('/data/vapes.json');
+        const res = await axios.get('http://localhost:3001/api/vapes');
         return res.data;
     } catch (error) {
         console.error(error);
+        return [];
     }
 });
 
