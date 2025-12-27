@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 
 interface Props {
     vape: VapeType;
+    isAdmin?: boolean;
 }
-
-const VapeCard: React.FC<Props> = ({ vape }) => {
+const API_IMAGE_URL = 'http://localhost:3001';
+const VapeCard: React.FC<Props> = ({ vape, isAdmin }) => {
     const dispatch = useAppDispatch();
     const cartItem = useAppSelector((state) => state.cart.items.find((i) => i.id === vape.id));
 
@@ -25,12 +26,14 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
         hover:-translate-y-1
       "
         >
-            <button className="absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-zinc-800/70 hover:scale-110 transition-transform duration-200">
-                <Heart className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-            </button>
+            {!isAdmin && (
+                <button className="absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-zinc-800/70 hover:scale-110 transition-transform duration-200">
+                    <Heart className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                </button>
+            )}
             <div className="w-full h-[180px] sm:h-[200px] flex items-center justify-center p-2">
                 <img
-                    src={vape.image}
+                    src={`${API_IMAGE_URL}${vape.image}`}
                     alt={vape.name}
                     className="object-contain max-h-full transition-transform duration-300 hover:scale-105"
                 />
@@ -61,7 +64,10 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
                                 +
                             </Button>
                         </div>
-                        <Link className="cursor-pointer rounded-md bg-secondary py-2 px-4 hover:bg-secondary/80" to={'/cart'}>
+                        <Link
+                            className="cursor-pointer rounded-md bg-secondary py-2 px-4 hover:bg-secondary/80"
+                            to={'/cart'}
+                        >
                             Перейти в корзину
                         </Link>
                     </div>

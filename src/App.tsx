@@ -1,26 +1,11 @@
-
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import { useEffect } from 'react';
-import { fetchVapes } from './store/vapeSlice';
-import VapeCard from './components/VapeCard.tsx';
+import VapeRender from './components/VapeRender.tsx';
+import useVapes from './hooks/useVapes.ts';
 
 function App() {
-    const dispatch = useAppDispatch();
-    const { vapes, isLoading, error } = useAppSelector((state) => state.vapes);
-    
-    useEffect(() => {
-        dispatch(fetchVapes());
-    }, [dispatch]);
-    if (isLoading) return <h2>Loading...</h2>
+    const { vapes, isLoading, error } = useVapes();
+    if (isLoading) return <h2>Loading...</h2>;
     if (error) return <p>Error: {error}</p>;
-
-    return (
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 p-4 bg-gray-50 dark:bg-zinc-950 min-h-screen transition-colors duration-300">
-            {vapes.map((vape) => (
-                <VapeCard key={vape.id} vape={vape} />
-            ))}
-        </div>
-    );
+    return <VapeRender vapes={vapes} />;
 }
 
 export default App;
