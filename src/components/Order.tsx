@@ -1,4 +1,3 @@
-import { useCartTotals } from '@/hooks/useCartTotals';
 import type { Vape } from '@/types/vape';
 import { useState } from 'react';
 interface OrderProps {
@@ -6,7 +5,6 @@ interface OrderProps {
 }
 type PickupType = 'Самовывоз' | 'Доставка';
 const Order: React.FC<OrderProps> = ({ cart }) => {
-    const { totalPrice } = useCartTotals(cart);
     const orderItems = cart.map((vape: Vape) => {
         return {
             id: vape.id,

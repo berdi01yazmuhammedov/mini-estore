@@ -10,6 +10,9 @@ const Header = () => {
             <Link className="flex-1" to="/">
                 <h1>Mini-estore</h1>
             </Link>
+             <Link  to="/admin">
+                <h2>Admin</h2>
+            </Link>
             {/* <nav >
                 <ul className="flex gap-10">
                     <li>Contact</li>
