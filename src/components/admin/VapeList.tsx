@@ -1,11 +1,17 @@
 import useVapes from '@/hooks/useVapes';
 
 const VapeList = () => {
-    const { vapes, isLoading, error } = useVapes();
+    const { vapes, isLoading, error, refetch } = useVapes();
 
     if (isLoading) return <h2 className="p-4">Loading...</h2>;
     if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
+    const handleDelete = async (id: number) => {
+        const ok = confirm('Удалить товар?');
+        if (!ok) return;
+        await fetch(`http://localhost:3001/api/vapes/${id}`, { method: 'DELETE' });
 
+        refetch();
+    };
     return (
         <div className="overflow-x-auto rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900">
             <table className="w-full border-collapse text-sm">
@@ -13,6 +19,9 @@ const VapeList = () => {
                     <tr>
                         <th className="p-3 text-left font-semibold text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-zinc-700">
                             Название
+                        </th>
+                        <th className="p-3 text-left font-semibold text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-zinc-700">
+                            Вкус
                         </th>
                         <th className="p-3 text-left font-semibold text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-zinc-700">
                             Цена
@@ -37,6 +46,9 @@ const VapeList = () => {
                         >
                             <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">
                                 {vape.name}
+                            </td>
+                            <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">
+                                {vape.flavor}
                             </td>
 
                             <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">
@@ -63,6 +75,7 @@ const VapeList = () => {
                                     </button>
 
                                     <button
+                                        onClick={() => handleDelete(vape.id)}
                                         className="
                                             px-3 py-1.5 rounded-md text-sm
                                             border border-red-500 text-red-600

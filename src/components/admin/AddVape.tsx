@@ -8,7 +8,6 @@ const AddVape = () => {
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
     const [flavor, setFlavor] = useState('');
-    const [nicotine, setNicotine] = useState('');
     const [strength, setStrength] = useState<StrengthType>('Легкая');
     const [stock, setStock] = useState('');
     const [puffs, setPuffs] = useState('');
@@ -23,7 +22,6 @@ const AddVape = () => {
         formData.append('name', name);
         formData.append('brand', brand);
         formData.append('flavor', flavor);
-        formData.append('nicotine', nicotine);
         formData.append('strength', strength);
         formData.append('stock', stock);
         formData.append('puffs', puffs);
@@ -39,7 +37,6 @@ const AddVape = () => {
         setName('');
         setBrand('');
         setFlavor('');
-        setNicotine('');
         setStrength('Легкая');
         setStock('');
         setPuffs('');
@@ -69,7 +66,6 @@ const AddVape = () => {
                     <Input label="Название" required value={name} onChange={setName} />
                     <Input label="Бренд" value={brand} onChange={setBrand} />
                     <Input label="Вкус" required value={flavor} onChange={setFlavor} />
-                    <Input label="Никотин" value={nicotine} onChange={setNicotine} />
                     <Select strength={strength} setStrength={setStrength} />
                     <Input label="Запас" type="number" required value={stock} onChange={setStock} />
                     <Input label="Затяжки" type="number" value={puffs} onChange={setPuffs} />

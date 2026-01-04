@@ -9,8 +9,8 @@ const useVapes = () => {
     useEffect(() => {
         dispatch(fetchVapes());
     }, [dispatch]);
-   
-    return { vapes, isLoading, error };
+
+    return { vapes, isLoading, error, refetch: () => dispatch(fetchVapes()) };
 };
 
 export default useVapes;
