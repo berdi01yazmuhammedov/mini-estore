@@ -7,7 +7,7 @@ import { addToCart, removeItem, removeOneFromCart } from '@/store/cartSlice';
 interface Props {
     item: Vape;
 }
-
+const API_IMAGE_URL = 'http://localhost:3001';
 
 const CartItem = ({ item }: Props) => {
     const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ const CartItem = ({ item }: Props) => {
 
     return (
         <div className="w-full flex items-center gap-4 p-4 border-b dark:border-zinc-700">
-            <img src={item.image} className="w-20 h-20 object-contain" alt={item.name} />
+            <img src={`${API_IMAGE_URL}${cartItem.image}`} className="w-20 h-20 object-contain" alt={item.name} />
 
             <div className="flex-1">
                 <h3 className="font-medium">{item.name}</h3>

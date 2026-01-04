@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { Input } from '../ui/Input';
+import { Select } from '../ui/Select';
 
-type StrengthType = 'Легкая' | 'Средняя' | 'Сильная';
+export type StrengthType = 'Легкая' | 'Средняя' | 'Сильная';
+
 const AddVape = () => {
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
@@ -22,93 +25,104 @@ const AddVape = () => {
         formData.append('flavor', flavor);
         formData.append('nicotine', nicotine);
         formData.append('strength', strength);
-        formData.append('stock', stock.toString());
-        formData.append('puffs', puffs.toString());
-        formData.append('price', price.toString());
+        formData.append('stock', stock);
+        formData.append('puffs', puffs);
+        formData.append('price', price);
         formData.append('description', description);
-
         if (image) formData.append('image', image);
 
-        const res = await fetch('http://localhost:3001/api/vapes', {
+        await fetch('http://localhost:3001/api/vapes', {
             method: 'POST',
             body: formData,
         });
-        const data = await res.json();
-        console.log('Ответ сервера', data);
+
+        setName('');
+        setBrand('');
+        setFlavor('');
+        setNicotine('');
+        setStrength('Легкая');
+        setStock('');
+        setPuffs('');
+        setPrice('');
+        setImage(null);
+        setDescription('');
     };
+
     return (
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <input
-                required
-                type="text"
-                placeholder="Название электронки"
-                value={name}
-                onChange={(e) => setName(e.target.value.toLocaleUpperCase())}
-            />
-            <input
-                type="text"
-                placeholder="Брэнд"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value.toUpperCase())}
-            />
-            <input
-                required
-                type="text"
-                placeholder="Вкус"
-                value={flavor}
-                onChange={(e) => setFlavor(e.target.value.toUpperCase())}
-            />
-            <input
-                type="text"
-                placeholder="Количество никотина"
-                value={nicotine}
-                onChange={(e) => setNicotine(e.target.value)}
-            />
-            <select
-                className="rounded-md py-1 px-1 bg-primary text-secondary"
-                value={strength}
-                onChange={(e) => setStrength(e.target.value as StrengthType)}
+        <div className="max-w-3xl mx-auto">
+            <form
+                onSubmit={handleSubmit}
+                className="
+                    bg-white dark:bg-zinc-900
+                    border border-gray-300 dark:border-zinc-700
+                    rounded-2xl p-6
+                    shadow-sm
+                    flex flex-col gap-6
+                "
             >
-                <option value="Легкая">Легкая</option>
-                <option value="Средняя">Средняя</option>
-                <option value="Крепкий">Крепкий</option>
-            </select>
-            <input
-                required
-                type="number"
-                placeholder="Запас"
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="Затяжки"
-                value={puffs}
-                onChange={(e) => setPuffs(e.target.value)}
-            />
-            <input
-                required
-                type="number"
-                placeholder="Цена"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-            />
-            <input
-                required
-                type="file"
-                placeholder="Картинка"
-                onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
-            />
-            <input
-                type="text"
-                placeholder="Описание"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-            />
-            <button className="rounded-md cursor-pointer hover:bg-primary/10" type="submit">
-                Добавить
-            </button>
-        </form>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                    Добавить товар
+                </h2>
+
+                {/* GRID */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Input label="Название" required value={name} onChange={setName} />
+                    <Input label="Бренд" value={brand} onChange={setBrand} />
+                    <Input label="Вкус" required value={flavor} onChange={setFlavor} />
+                    <Input label="Никотин" value={nicotine} onChange={setNicotine} />
+                    <Select strength={strength} setStrength={setStrength} />
+                    <Input label="Запас" type="number" required value={stock} onChange={setStock} />
+                    <Input label="Затяжки" type="number" value={puffs} onChange={setPuffs} />
+                    <Input label="Цена" type="number" required value={price} onChange={setPrice} />
+                </div>
+
+                {/* IMAGE */}
+                <div>
+                    <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
+                        Картинка
+                    </label>
+                    <input
+                        type="file"
+                        required
+                        onChange={(e) => setImage(e.target.files?.[0] || null)}
+                        className="
+                            w-full text-sm
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-md file:border-0
+                            file:bg-blue-600 file:text-white
+                            hover:file:bg-blue-700
+                            transition
+                        "
+                    />
+                </div>
+
+                {/* DESCRIPTION */}
+                <div>
+                    <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
+                        Описание
+                    </label>
+                    <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={4}
+                        className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-transparent px-3 py-2 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    className="
+                        self-start
+                        px-6 py-2 rounded-md
+                        bg-blue-600 text-white
+                        hover:bg-blue-700
+                        transition
+                    "
+                >
+                    Добавить товар
+                </button>
+            </form>
+        </div>
     );
 };
 
