@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 
@@ -14,7 +14,28 @@ const AddVape = () => {
     const [price, setPrice] = useState('');
     const [image, setImage] = useState<File | null>(null);
     const [description, setDescription] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
 
+    const fileRef = useRef<HTMLInputElement | null>(null);
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+    const handleDragDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files?.[0];
+        if (file) {
+            setImage(file);
+            if (fileRef.current) {
+                fileRef.current.files = e.dataTransfer.files;
+            }
+        }
+    };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -42,46 +63,78 @@ const AddVape = () => {
         setPuffs('');
         setPrice('');
         setImage(null);
+        if (fileRef.current) {
+            fileRef.current.value = '';
+        }
         setDescription('');
     };
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <form
-                onSubmit={handleSubmit}
-                className="
+        <>
+            <div className="max-w-3xl mx-auto">
+                <form
+                    onSubmit={handleSubmit}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDragDrop}
+                    className={`
+                    relative
                     bg-white dark:bg-zinc-900
-                    border border-gray-300 dark:border-zinc-700
-                    rounded-2xl p-6
-                    shadow-sm
+                    border rounded-2xl p-6
                     flex flex-col gap-6
-                "
-            >
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                    Добавить товар
-                </h2>
+                    transition
+                    ${isDragging ? 'ring-2 ring-blue-500 bg-blue-50/40 dark:bg-zinc-800' : ''}
+  `}
+                >
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                        Добавить товар
+                    </h2>
 
-                {/* GRID */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input label="Название" required value={name} onChange={setName} />
-                    <Input label="Бренд" value={brand} onChange={setBrand} />
-                    <Input label="Вкус" required value={flavor} onChange={setFlavor} />
-                    <Select strength={strength} setStrength={setStrength} />
-                    <Input label="Запас" type="number" required value={stock} onChange={setStock} />
-                    <Input label="Затяжки" type="number" value={puffs} onChange={setPuffs} />
-                    <Input label="Цена" type="number" required value={price} onChange={setPrice} />
-                </div>
+                    {/* GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Input label="Название" required value={name} onChange={setName} />
+                        <Input label="Бренд" value={brand} onChange={setBrand} />
+                        <Input label="Вкус" required value={flavor} onChange={setFlavor} />
+                        <Select strength={strength} setStrength={setStrength} />
+                        <Input
+                            label="Запас"
+                            type="number"
+                            required
+                            value={stock}
+                            onChange={setStock}
+                        />
+                        <Input label="Затяжки" type="number" value={puffs} onChange={setPuffs} />
+                        <Input
+                            label="Цена"
+                            type="number"
+                            required
+                            value={price}
+                            onChange={setPrice}
+                        />
+                    </div>
 
-                {/* IMAGE */}
-                <div>
-                    <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-                        Картинка
-                    </label>
-                    <input
-                        type="file"
-                        required
-                        onChange={(e) => setImage(e.target.files?.[0] || null)}
-                        className="
+                    {/* IMAGE */}
+                    {isDragging && (
+                        <div
+                            className="absolute inset-0 z-20 flex items-center justify-center
+                  bg-blue-500/10 backdrop-blur-sm rounded-2xl
+                  pointer-events-none"
+                        >
+                            <span className="text-lg font-semibold text-blue-600">
+                                Отпусти файл для загрузки
+                            </span>
+                        </div>
+                    )}
+                    <div>
+                        <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
+                            Картинка
+                        </label>
+                        <input
+                            ref={fileRef}
+                            type="file"
+                            required
+                            onChange={(e) => setImage(e.target.files?.[0] || null)}
+                            className="
                             w-full text-sm
                             file:mr-4 file:py-2 file:px-4
                             file:rounded-md file:border-0
@@ -89,36 +142,42 @@ const AddVape = () => {
                             hover:file:bg-blue-700
                             transition
                         "
-                    />
-                </div>
+                        />
+                        {image && (
+                            <p className="text-xs text-gray-500 mt-1">
+                                Загружено: <span className="font-medium">{image.name}</span>
+                            </p>
+                        )}
+                    </div>
 
-                {/* DESCRIPTION */}
-                <div>
-                    <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
-                        Описание
-                    </label>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={4}
-                        className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-transparent px-3 py-2 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                    {/* DESCRIPTION */}
+                    <div>
+                        <label className="block text-sm mb-1 text-gray-600 dark:text-gray-400">
+                            Описание
+                        </label>
+                        <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={4}
+                            className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-transparent px-3 py-2 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
 
-                <button
-                    type="submit"
-                    className="
+                    <button
+                        type="submit"
+                        className="
                         self-start
                         px-6 py-2 rounded-md
                         bg-blue-600 text-white
                         hover:bg-blue-700
                         transition
                     "
-                >
-                    Добавить товар
-                </button>
-            </form>
-        </div>
+                    >
+                        Добавить товар
+                    </button>
+                </form>
+            </div>
+        </>
     );
 };
 
