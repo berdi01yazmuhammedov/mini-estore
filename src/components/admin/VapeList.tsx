@@ -1,7 +1,7 @@
 import useVapes from '@/hooks/useVapes';
 import type { Vape } from '@/types/vape';
 import { useState } from 'react';
-
+const API_URL = import.meta.env.VITE_API_URL;
 const VapeList = () => {
     const { vapes, isLoading, error, refetch } = useVapes();
     const [editId, setEditId] = useState<number | null>(null);
@@ -18,7 +18,7 @@ const VapeList = () => {
     const handleDelete = async (id: number) => {
         const ok = confirm('Удалить товар?');
         if (!ok) return;
-        await fetch(`http://localhost:3001/api/vapes/${id}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/vapes/${id}`, { method: 'DELETE' });
 
         refetch();
     };
@@ -38,7 +38,7 @@ const VapeList = () => {
     };
 
     const handleSave = async (id: number) => {
-        await fetch(`http://localhost:3001/api/vapes/${id}`, {
+        await fetch(`${API_URL}/vapes/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(editData),

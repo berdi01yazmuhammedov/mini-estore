@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { Vape } from '../types/vape';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 export const fetchVapes = createAsyncThunk('fetchVapes', async () => {
     try {
-        const res = await axios.get('http://localhost:3001/api/vapes');
+        const res = await axios.get(`${API_URL}/vapes`);
         return res.data;
     } catch (error) {
         console.error(error);

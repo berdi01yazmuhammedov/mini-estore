@@ -3,7 +3,7 @@ import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 
 export type StrengthType = 'Легкая' | 'Средняя' | 'Сильная';
-
+const API_URL = import.meta.env.VITE_API_URL;
 const AddVape = () => {
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
@@ -50,7 +50,7 @@ const AddVape = () => {
         formData.append('description', description);
         if (image) formData.append('image', image);
 
-        await fetch('http://localhost:3001/api/vapes', {
+        await fetch(`${API_URL}/vapes`, {
             method: 'POST',
             body: formData,
         });
