@@ -18,7 +18,7 @@ const VapeList = () => {
     const handleDelete = async (id: number) => {
         const ok = confirm('Удалить товар?');
         if (!ok) return;
-        await fetch(`${API_URL}/vapes/${id}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/api/vapes/${id}`, { method: 'DELETE' });
 
         refetch();
     };
@@ -38,7 +38,7 @@ const VapeList = () => {
     };
 
     const handleSave = async (id: number) => {
-        await fetch(`${API_URL}/vapes/${id}`, {
+        await fetch(`${API_URL}/api/vapes/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(editData),

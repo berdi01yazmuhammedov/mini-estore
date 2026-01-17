@@ -50,7 +50,7 @@ const AddVape = () => {
         formData.append('description', description);
         if (image) formData.append('image', image);
 
-        await fetch(`${API_URL}/vapes`, {
+        await fetch(`${API_URL}/api/vapes`, {
             method: 'POST',
             body: formData,
         });

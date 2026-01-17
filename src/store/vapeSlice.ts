@@ -4,7 +4,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL;
 export const fetchVapes = createAsyncThunk('fetchVapes', async () => {
     try {
-        const res = await axios.get(`${API_URL}/vapes`);
+        const res = await axios.get(`${API_URL}/api/vapes`);
         return res.data;
     } catch (error) {
         console.error(error);
