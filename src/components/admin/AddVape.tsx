@@ -54,7 +54,6 @@ const AddVape = () => {
             method: 'POST',
             body: formData,
         });
-
         setName('');
         setBrand('');
         setFlavor('');
@@ -67,6 +66,7 @@ const AddVape = () => {
             fileRef.current.value = '';
         }
         setDescription('');
+
     };
 
     return (

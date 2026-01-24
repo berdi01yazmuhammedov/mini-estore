@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 interface Props {
     vape: VapeType;
 }
-const API_IMAGE_URL = 'http://localhost:3001';
 
 const VapeCard: React.FC<Props> = ({ vape }) => {
   const dispatch = useAppDispatch();
@@ -37,7 +36,7 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
       {/* IMAGE */}
       <div className="aspect-[3/4] w-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center">
         <img
-          src={`${API_IMAGE_URL}${vape.image}`}
+          src={vape.image}
           alt={vape.name}
           className="h-full object-contain p-4 transition-transform duration-300 hover:scale-105"
         />
