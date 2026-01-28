@@ -6,6 +6,7 @@ const AdminPage = () => {
             <div className=" flex gap-4 p-4">
                 <Link to="list">Список товаров</Link>
                 <Link to="add">Добавить товар</Link>
+                <Link to="orders">Заказы</Link>
             </div>
             <div className="p-4">
                 <Outlet />

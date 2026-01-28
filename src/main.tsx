@@ -10,6 +10,8 @@ import PayPage from './pages/PayPage.tsx';
 import AdminPage from './pages/AdminPage.tsx';
 import AddVape from './components/admin/AddVape.tsx';
 import VapeList from './components/admin/VapeList.tsx';
+import Orders from './components/admin/Orders.tsx';
+import OrderSuccess from './pages/OrderSuccess.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
@@ -22,7 +24,9 @@ createRoot(document.getElementById('root')!).render(
                     <Route path="/admin" element={<AdminPage />}>
                         <Route path="add" element={<AddVape />} />
                         <Route path="list" element={<VapeList />} />
+                        <Route path="orders" element={<Orders />} />
                     </Route>
+                    <Route path='order-success' element={<OrderSuccess />}/>
                     <Route path="*" element={<h1>404</h1>} /> // ADD NOT FOUND PAGE
                 </Route>
             </Routes>

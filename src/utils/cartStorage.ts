@@ -8,3 +8,7 @@ export const loadCart = (): Vape[] => {
         return [];
     }
 }
+
+export const clearCartStorage = () => {
+    localStorage.removeItem("cart");
+}

@@ -1,5 +1,9 @@
+import { clearCart } from '@/store/cartSlice';
+import { useAppDispatch } from '@/store/hooks';
 import type { Vape } from '@/types/vape';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+const API_URL = import.meta.env.VITE_API_URL;
 interface OrderProps {
     cart: Vape[];
 }
@@ -13,12 +17,14 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
             quantity: vape.quantity,
         };
     });
-
+    const dispatch = useAppDispatch();
     const [isPickup, setIsPickup] = useState<PickupType>('Самовывоз');
     const [contactType, setContactType] = useState<'telegram' | 'email'>('telegram');
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
+    const [loading, setLoading] = useState(false);
 
+    const navigate = useNavigate();
     const handlePickupChange = (type: PickupType) => {
         setIsPickup(type);
         if (type === 'Самовывоз') {
@@ -28,27 +34,42 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const orderData = {
-            items: orderItems,
-            contact,
-            contactType,
-            isPickup,
-            address: isPickup === 'Доставка' ? address : null,
-        };
-        await fetch('http://localhost:3001/api/orders', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-        });
+        if (loading) return;
+
+        try {
+            setLoading(true);
+            const orderData = {
+                items: orderItems,
+                contact,
+                contactType,
+                isPickup,
+                address: isPickup === 'Доставка' ? address : null,
+            };
+            const res = await fetch(`${API_URL}/api/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            });
+            if (!res.ok) {
+                alert('Произошла ошибка при обработке заказа');
+            }
+
+            dispatch(clearCart());
+            navigate('/order-success');
+        } catch (error) {
+            alert('Произошла ошибка при обработке заказа');
+        } finally {
+            setLoading(false);
+        }
     };
     return (
         <div className="mx-auto">
             <h1>Оформление заказа</h1>
             <p>
-                При нажатии на кнопку "Заказать" на Ваш телеграм будет отправлено сообщение с
-                уточнением заказа.
+                При нажатии на кнопку "Заказать" на Ваш телеграм или email будет отправлено
+                сообщение с уточнением заказа.
             </p>
             <p>
                 Подтверждение не должно занимать больше 2-3 минут. Но если больше, прошу подождать.
@@ -98,7 +119,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                             onClick={() => setContactType('email')}
                             className={`cursor-pointer px-2 py-1 border rounded ${contactType === 'email' ? 'bg-blue-500 text-white' : ''}`}
                         >
-                            Почта
+                            Почту
                         </button>
                         <button
                             type="button"
@@ -118,9 +139,11 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                     />
                     <button
                         type="submit"
-                        className='cursor-pointer w-[150px] px-4 py-2 font-bold text-blue-500 border border-blue-500 rounded hover:bg-blue-500 hover:text-white text-center rounded-md"'
+                        disabled={loading}
+                        className={`cursor-pointer w-[150px] px-4 py-2 font-bold border rounded
+${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500 hover:text-white'}`}
                     >
-                        Заказать
+                        {loading ? 'Оформляем...' : 'Заказать'}
                     </button>
                 </form>
             </div>
