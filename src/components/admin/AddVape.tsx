@@ -5,14 +5,7 @@ import { detectBrand } from '@/utils/detectBrands';
 
 export type StrengthType = 'Легкая' | 'Средняя' | 'Сильная';
 const API_URL = import.meta.env.VITE_API_URL;
-const BRAND_RULES = [
-    { match: 'WAKA', brand: 'WAKA' },
-    { match: 'LOST MARY', brand: 'LOST MARY' },
-    { match: 'ELFBAR', brand: 'ELFBAR' },
-    { match: 'HQD', brand: 'HQD' },
-    { match: 'PUFFMI', brand: 'PUFFMI' },
-    { match: 'PLONQ', brand: 'PLONQ' },
-];
+
 const AddVape = () => {
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
