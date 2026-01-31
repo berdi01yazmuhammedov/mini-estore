@@ -52,6 +52,9 @@ const VapeList = () => {
                 <thead className="bg-gray-100 dark:bg-zinc-800">
                     <tr>
                         <th className="p-3 text-left font-semibold text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-zinc-700">
+                            №
+                        </th>
+                        <th className="p-3 text-left font-semibold text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-zinc-700">
                             Id
                         </th>
                         <th className="p-3 text-left font-semibold text-gray-700 dark:text-gray-200 border-b border-gray-300 dark:border-zinc-700">
@@ -76,7 +79,7 @@ const VapeList = () => {
                 </thead>
 
                 <tbody>
-                    {vapes.map((vape) => (
+                    {vapes.map((vape, index) => (
                         <tr
                             key={vape.id}
                             className="
@@ -84,6 +87,9 @@ const VapeList = () => {
                                 transition-colors
                             "
                         >
+                            <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">
+                                {index + 1}
+                            </td>
                             <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">
                                 {vape.id}
                             </td>

@@ -1,12 +1,22 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
+import { detectBrand } from '@/utils/detectBrands';
 
 export type StrengthType = 'Легкая' | 'Средняя' | 'Сильная';
 const API_URL = import.meta.env.VITE_API_URL;
+const BRAND_RULES = [
+    { match: 'WAKA', brand: 'WAKA' },
+    { match: 'LOST MARY', brand: 'LOST MARY' },
+    { match: 'ELFBAR', brand: 'ELFBAR' },
+    { match: 'HQD', brand: 'HQD' },
+    { match: 'PUFFMI', brand: 'PUFFMI' },
+    { match: 'PLONQ', brand: 'PLONQ' },
+];
 const AddVape = () => {
     const [name, setName] = useState('');
     const [brand, setBrand] = useState('');
+    const [brandTouched, setBrandTouched] = useState(false);
     const [flavor, setFlavor] = useState('');
     const [strength, setStrength] = useState<StrengthType>('Легкая');
     const [stock, setStock] = useState('');
@@ -15,7 +25,7 @@ const AddVape = () => {
     const [image, setImage] = useState<File | null>(null);
     const [description, setDescription] = useState('');
     const [isDragging, setIsDragging] = useState(false);
-
+    const [loading, setLoading] = useState(false);
     const fileRef = useRef<HTMLInputElement | null>(null);
 
     const handleDragOver = (e: React.DragEvent) => {
@@ -38,37 +48,50 @@ const AddVape = () => {
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (loading) return;
 
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('brand', brand);
-        formData.append('flavor', flavor);
-        formData.append('strength', strength);
-        formData.append('stock', stock);
-        formData.append('puffs', puffs);
-        formData.append('price', price);
-        formData.append('description', description);
-        if (image) formData.append('image', image);
+        try {
+            setLoading(true);
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('brand', brand);
+            formData.append('flavor', flavor);
+            formData.append('strength', strength);
+            formData.append('stock', stock);
+            formData.append('puffs', puffs);
+            formData.append('price', price);
+            formData.append('description', description);
+            if (image) formData.append('image', image);
 
-        await fetch(`${API_URL}/api/vapes`, {
-            method: 'POST',
-            body: formData,
-        });
-        setName('');
-        setBrand('');
-        setFlavor('');
-        setStrength('Легкая');
-        setStock('');
-        setPuffs('');
-        setPrice('');
-        setImage(null);
-        if (fileRef.current) {
-            fileRef.current.value = '';
+            await fetch(`${API_URL}/api/vapes`, {
+                method: 'POST',
+                body: formData,
+            });
+            setName('');
+            setBrand('');
+            setFlavor('');
+            setStrength('Легкая');
+            setStock('');
+            setPuffs('');
+            setPrice('');
+            setImage(null);
+            if (fileRef.current) {
+                fileRef.current.value = '';
+            }
+            setDescription('');
+        } catch (error) {
+            alert('Произошла ошибка при добавлении заказа');
+        } finally {
+            setLoading(false);
         }
-        setDescription('');
-
     };
-
+    useEffect(() => {
+        if (brandTouched) return;
+        const detecded = detectBrand(name);
+        if (detecded !== brand) {
+            setBrand(detecded);
+        }
+    }, [name, brandTouched, brand]);
     return (
         <>
             <div className="max-w-3xl mx-auto">
@@ -93,7 +116,19 @@ const AddVape = () => {
                     {/* GRID */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Input label="Название" required value={name} onChange={setName} />
-                        <Input label="Бренд" value={brand} onChange={setBrand} />
+                        <Input
+                            label="Бренд"
+                            value={brand}
+                            onChange={(value) => {
+                                setBrand(value);
+                                setBrandTouched(true);
+                            }}
+                        />
+                        {!brand && name && (
+                            <p className="text-xs text-gray-400">
+                                Бренд не распознан — можно указать вручную
+                            </p>
+                        )}
                         <Input label="Вкус" required value={flavor} onChange={setFlavor} />
                         <Select strength={strength} setStrength={setStrength} />
                         <Input
@@ -165,15 +200,15 @@ const AddVape = () => {
 
                     <button
                         type="submit"
-                        className="
-                        self-start
+                        className={`cursor-pointer self-start
                         px-6 py-2 rounded-md
                         bg-blue-600 text-white
-                        hover:bg-blue-700
-                        transition
-                    "
+                       
+                        transition duration-300
+                        ${loading ? 'opacity-50 cursor-not-allowed' : ' hover:bg-blue-700'}
+                        `}
                     >
-                        Добавить товар
+                        {loading ? 'Добавляем...' : 'Добавить товар'}
                     </button>
                 </form>
             </div>
