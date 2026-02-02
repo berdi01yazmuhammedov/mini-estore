@@ -3,10 +3,10 @@ import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
     return (
-            <div className="bg-gray-300 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+            <div className="bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200">
                 <Header />
 
-                <main className="container mx-auto px-4 py-8">
+                <main className="container mx-auto px-2 py-8 lg:px-6">
                     <Outlet />
                 </main>
             </div>
