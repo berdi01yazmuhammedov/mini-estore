@@ -15,16 +15,17 @@ const CartItem = ({ item }: Props) => {
     if (!cartItem) return null;
 
     return (
-        <div className="w-full flex items-center gap-4 p-4 border-b dark:border-zinc-700">
+        <div className="w-full flex flex-col lg:flex-row items-center gap-4 p-4 border-b dark:border-zinc-700">
+            <div className="flex flex-1">
             <img src={cartItem.image} className="w-20 h-20 object-contain" alt={item.name} />
-
-            <div className="flex-1">
-                <h3 className="font-medium">{item.name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{item.flavor}</p>
-                <p className="font-semibold mt-1">{item.price} ₽</p>
+                <div>
+                    <h3 className="font-medium">{item.name}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{item.flavor}</p>
+                    <p className="font-semibold mt-1">{item.price} ₽</p>
+                </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 self-end">
                 <Button
                     variant="outline"
                     size="sm"
@@ -43,11 +44,10 @@ const CartItem = ({ item }: Props) => {
                 >
                     +
                 </Button>
+                <Button variant="ghost" size="icon" onClick={() => dispatch(removeItem(item.id))}>
+                    <Trash2 className="w-5 h-5 text-red-500" />
+                </Button>
             </div>
-
-            <Button variant="ghost" size="icon" onClick={() => dispatch(removeItem(item.id))}>
-                <Trash2 className="w-5 h-5 text-red-500" />
-            </Button>
         </div>
     );
 };

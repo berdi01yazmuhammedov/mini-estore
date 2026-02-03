@@ -13,7 +13,7 @@ const CartPage = () => {
     const { totalPrice } = useCartTotals(cart);
 
     return (
-        <div className="w-full px-10 mx-auto">
+        <div className="w-full mx-auto px-4">
             {!cart.length ? (
                 <div className="flex flex-col gap-5">
                     <p className="text-center">Корзина пуста</p>
@@ -25,14 +25,14 @@ const CartPage = () => {
                     </Link>
                 </div>
             ) : (
-                <div className="flex justify-center gap-10">
+                <div className="flex lg:flex-row flex-col justify-center gap-10 px-4">
                     <div>
                         <div className="w-full mx-auto">
                             {cart.map((item) => (
                                 <CartItem key={item.id} item={item} />
                             ))}
                         </div>
-                        <div className="flex justify-center gap-30 py-5">
+                        <div className="flex justify-between py-5 px-4">
                             <h3>Всего</h3>
                             <p>{totalPrice} ₽</p>
                             <Button
