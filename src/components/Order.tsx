@@ -131,7 +131,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                     </div>
                     <input
                         required
-                        className="w-1/3"
+                        className="lg:w-1/3 py-2 px-4 border rounded-sm"
                         type={contactType === 'email' ? 'email' : 'text'}
                         placeholder={contactType === 'email' ? 'Ваша почта' : 'Ваш телеграм'}
                         value={contact}
@@ -140,7 +140,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`cursor-pointer w-[150px] px-4 py-2 font-bold border rounded
+                        className={`cursor-pointer lg:w-1/3 px-4 py-2 font-bold border rounded
 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500 hover:text-white'}`}
                     >
                         {loading ? 'Оформляем...' : 'Заказать'}
