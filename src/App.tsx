@@ -3,7 +3,7 @@ import useVapes from './hooks/useVapes.ts';
 
 function App() {
     const { vapes, isLoading, error } = useVapes();
-    if (isLoading) return <h2>Loading...</h2>;
+    if (isLoading) return <h2>Загрузка...</h2>;
     if (error) return <p>Error: {error}</p>;
     return <VapeRender vapes={vapes} />;
 }
