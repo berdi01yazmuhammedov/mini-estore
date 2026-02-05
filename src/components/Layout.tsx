@@ -6,7 +6,7 @@ const Layout = () => {
             <div className="bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200">
                 <Header />
 
-                <main className="container mx-auto px-2 py-8 lg:px-6">
+                <main className="container mx-auto px-2 py-2 lg:px-6">
                     <Outlet />
                 </main>
             </div>

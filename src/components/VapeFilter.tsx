@@ -11,7 +11,7 @@ interface VapeFilterProps {
 
 const VapeFilter = ({ activeBrand, onChange }: VapeFilterProps) => {
     return (
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="flex flex-wrap gap-3 mb-2">
             {BRANDS.map((brand) => {
                 const isActive = activeBrand === brand;
 
@@ -20,7 +20,7 @@ const VapeFilter = ({ activeBrand, onChange }: VapeFilterProps) => {
                         key={brand}
                         onClick={() => onChange(brand)}
                         className={clsx(
-                            'px-5 py-2 rounded-xl font-medium transition-all duration-300',
+                            'cursor-pointer px-3 lg:px-5 py-2 rounded-xl text-sm font-medium transition-all duration-300',
                             'border backdrop-blur-md',
                             'active:scale-95',
                             isActive
