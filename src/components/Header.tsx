@@ -1,23 +1,31 @@
-import { ShoppingCart } from 'lucide-react';
+import { Search, ShoppingCart } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { useAppSelector } from '@/store/hooks';
 import { Link } from 'react-router-dom';
+import { useSearch } from '@/context/SearchContext';
 
 const Header = () => {
     const { items } = useAppSelector((state) => state.cart);
-   const isAdmin = localStorage.getItem('admin_key') === import.meta.env.VITE_ADMIN_KEY;
-
-
+    const isAdmin = localStorage.getItem('admin_key') === import.meta.env.VITE_ADMIN_KEY;
+    const {search, setSearch} = useSearch();
     return (
-        <header className="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-700 px-6 py-3 flex items-center justify-between gap-4 md:gap-8 shadow-sm">
-            {/* Логотип */}
+        <header className="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-700 px-6 py-3 flex items-center justify-between gap-1 lg:gap-4 md:gap-8 shadow-sm">
             <Link
                 to="/"
                 className="flex-1 text-xl font-bold text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition"
             >
                 Mini-eStore
             </Link>
-
+            <form className='w-[200px] lg:w-[400px] flex items-center relative' onSubmit={(e) => e.preventDefault()}>
+                <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="w-full px-2 py-2 rounded-md border-2 border-gray-300 dark:border-zinc-700"
+                    type="text"
+                    placeholder="Поиск вкусов..."
+                />
+                <Search className='cursor-pointer w-5 h-5 absolute right-1 lg:right-3 ' />
+            </form>
             {/* Навигация */}
             <nav className="flex items-center gap-4 md:gap-6">
                 <Link

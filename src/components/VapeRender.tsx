@@ -2,40 +2,48 @@ import type { Vape } from '@/types/vape';
 import React, { useMemo, useState } from 'react';
 import VapeCard from './VapeCard';
 import VapeFilter from './VapeFilter';
+import { useSearch } from '@/context/SearchContext';
 interface VapeRenderProps {
     vapes: Vape[];
 }
 type Brand = 'ВСЕ' | 'WAKA' | 'ELFBAR' | 'LOST MARY' | 'PUFFMI' | 'HQD' | 'PLONQ';
-const BRAND_ORDER: Brand[] = [
-    'WAKA',
-    'ELFBAR',
-    'LOST MARY',
-    'PUFFMI',
-    'HQD',
-    'PLONQ',
-];
+const BRAND_ORDER: Brand[] = ['WAKA', 'ELFBAR', 'LOST MARY', 'PUFFMI', 'HQD', 'PLONQ'];
 
 const DEFAULT_BRAND: Brand = 'ВСЕ';
+
 const VapeRender: React.FC<VapeRenderProps> = ({ vapes }) => {
+    const { search } = useSearch();
+    const isBrand = (value: string): value is Brand => BRAND_ORDER.includes(value as Brand);
+    const getBrandIndex = (brand: string) =>
+        isBrand(brand) ? BRAND_ORDER.indexOf(brand) : Number.MAX_SAFE_INTEGER;
     const [activeBrand, setActiveBrand] = useState<Brand>(DEFAULT_BRAND);
+
     const sortByBrandAndPrice = (a: Vape, b: Vape) => {
-        const brandDiff = 
-        BRAND_ORDER.indexOf(a.brand as Brand) - BRAND_ORDER.indexOf(b.brand as Brand);
-        if(brandDiff !== 0) return brandDiff;
+        const brandDiff = getBrandIndex(a.brand) - getBrandIndex(b.brand);
+
+        if (brandDiff !== 0) return brandDiff;
 
         return b.price - a.price;
-    }
+    };
     const filteredVapes = useMemo(() => {
-        if (activeBrand === 'ВСЕ'){
-            return [...vapes].sort(sortByBrandAndPrice)
+        let result = [...vapes];
+
+        if (activeBrand !== 'ВСЕ') {
+            result = result.filter((v) => v.brand === activeBrand);
         }
-        return vapes
-            .filter((vape) => vape.brand === activeBrand)
-            .sort((a, b) => b.price - a.price);
-    }, [vapes, activeBrand]);
+
+        if (search.trim()) {
+            const q = search.toLowerCase();
+            result = result.filter(
+                (v) => v.flavor.toLowerCase().includes(q) || v.name.toLowerCase().includes(q)
+            );
+        }
+
+        return result.sort(sortByBrandAndPrice);
+    }, [vapes, activeBrand, search]);
     return (
         <div>
-            <VapeFilter activeBrand={activeBrand} onChange={setActiveBrand}/>
+            <VapeFilter activeBrand={activeBrand} onChange={setActiveBrand} />
             <div
                 className="
     mx-auto
