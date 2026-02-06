@@ -7,8 +7,10 @@ const useVapes = () => {
     const { vapes, isLoading, error } = useAppSelector((state) => state.vapes);
 
     useEffect(() => {
-        dispatch(fetchVapes());
-    }, [dispatch]);
+        if (vapes.length === 0) {
+            dispatch(fetchVapes());
+        }
+    }, [dispatch, vapes.length]);
 
     return { vapes, isLoading, error, refetch: () => dispatch(fetchVapes()) };
 };

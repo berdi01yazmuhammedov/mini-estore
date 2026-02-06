@@ -1,21 +1,17 @@
-import { ShoppingCart } from 'lucide-react';
 import type { Vape as VapeType } from '../types/vape';
-import { Button } from './ui/button';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { addToCart, removeOneFromCart } from '@/store/cartSlice';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import VapeFooterActions from './VapeFooterActions';
 
 interface Props {
     vape: VapeType;
 }
 
 const VapeCard: React.FC<Props> = ({ vape }) => {
-    const dispatch = useAppDispatch();
-    const cartItem = useAppSelector((state) => state.cart.items.find((i) => i.id === vape.id));
-
+    const navigate = useNavigate();
     return (
         <div
-            className="
+            
+            className=" 
         relative w-full max-w-[260px] h-[420px]
         rounded-2xl
         bg-white dark:bg-zinc-900
@@ -27,8 +23,8 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
       "
         >
             {/* IMAGE */}
-            <div
-                className="h-[260px] w-full
+            <div onClick={() => navigate(`/vape/${vape.id}`)}
+                className="cursor-pointer h-[260px] w-full
     bg-zinc-50 dark:bg-zinc-800
     flex items-center justify-center
     overflow-hidden"
@@ -57,44 +53,7 @@ const VapeCard: React.FC<Props> = ({ vape }) => {
             </div>
 
             {/* FOOTER */}
-            <div className="mt-auto px-3 pb-3 pt-2">
-                {cartItem ? (
-                    <div className="flex flex-col gap-2">
-                        <div className="flex items-center justify-between">
-                            <Button size="sm" onClick={() => dispatch(removeOneFromCart(vape.id))}>
-                                −
-                            </Button>
-
-                            <span className="font-semibold">{cartItem.quantity}</span>
-
-                            <Button
-                                size="sm"
-                                disabled={cartItem.quantity >= vape.stock}
-                                onClick={() => dispatch(addToCart(vape))}
-                            >
-                                +
-                            </Button>
-                        </div>
-
-                        <Link
-                            to="/cart"
-                            className="
-                text-center text-sm
-                rounded-md py-2
-                bg-secondary hover:bg-secondary/80
-                transition
-              "
-                        >
-                            В корзину
-                        </Link>
-                    </div>
-                ) : (
-                    <Button className="w-full gap-2" onClick={() => dispatch(addToCart(vape))}>
-                        <ShoppingCart className="w-4 h-4" />
-                        Добавить
-                    </Button>
-                )}
-            </div>
+            <VapeFooterActions product={vape}/>
         </div>
     );
 };

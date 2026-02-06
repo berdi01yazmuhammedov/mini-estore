@@ -15,6 +15,7 @@ import OrderSuccess from './pages/OrderSuccess.tsx';
 import AdminLogin from './pages/AdminLogin.tsx';
 import ProtectedRoute from './components/admin/ProtectedRoute.tsx';
 import { SearchProvider } from './context/SearchContext.tsx';
+import ProductPage from './pages/ProductPage.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
                 <Routes>
                     <Route element={<Layout />}>
                         <Route path="/" element={<App />} />
+                        <Route path="/vape/:id" element={<ProductPage />} />
                         <Route path="/cart" element={<CartPage />} />
                         <Route path="/pay" element={<PayPage />} />
                         <Route path="/admin-login" element={<AdminLogin />} />
