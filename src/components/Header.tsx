@@ -3,7 +3,6 @@ import { ThemeToggle } from './ThemeToggle';
 import { useAppSelector } from '@/store/hooks';
 import { Link } from 'react-router-dom';
 import { useSearch } from '@/context/SearchContext';
-
 const Header = () => {
     const { items } = useAppSelector((state) => state.cart);
     const isAdmin = localStorage.getItem('admin_key') === import.meta.env.VITE_ADMIN_KEY;
@@ -14,7 +13,7 @@ const Header = () => {
                 to="/"
                 className="flex-1 text-xl font-bold text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition"
             >
-                Mini-eStore
+              <img className='w-[100px] rounded-sm' src="images/logo.png" alt="Logo Vape Store" />
             </Link>
             <form className='w-[200px] lg:w-[400px] flex items-center relative' onSubmit={(e) => e.preventDefault()}>
                 <input

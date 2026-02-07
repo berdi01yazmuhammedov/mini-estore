@@ -10,9 +10,7 @@ const ProductPage = () => {
     const dispatch = useAppDispatch();
     const { currentVape, isLoading } = useAppSelector((state) => state.vapes);
     useEffect(() => {
-        if (!currentVape) {
             dispatch(fetchVapeById(Number(id)));
-        }
     }, [id]);
     if (isLoading) {
         return <div className="text-center py-10">Загрузка...</div>;
