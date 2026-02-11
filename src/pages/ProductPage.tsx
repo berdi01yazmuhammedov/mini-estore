@@ -70,7 +70,6 @@ const ProductPage = () => {
                         <h1 className="text-3xl font-semibold leading-tight md:text-4xl">
                             {currentVape.name}
                         </h1>
-                        <p className="text-sm text-muted-foreground">{currentVape.description}</p>
                     </div>
 
                     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
@@ -102,17 +101,6 @@ const ProductPage = () => {
                             <p className="text-xs uppercase text-muted-foreground">Бренд</p>
                             <p className="mt-1 text-lg font-semibold">{currentVape.brand}</p>
                         </div>
-                    </div>
-
-                    <div className="rounded-2xl border border-border bg-gradient-to-br from-muted/40 to-transparent p-5">
-                        <p className="text-xs uppercase text-muted-foreground">
-                            Почему стоит попробовать
-                        </p>
-                        <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                            <li>• Долгая автономность и стабильный вкус.</li>
-                            <li>• Стильный дизайн и приятная тяга.</li>
-                            <li>• Идеален для ежедневного использования.</li>
-                        </ul>
                     </div>
                 </div>
             </div>
