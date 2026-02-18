@@ -1,6 +1,8 @@
 import useVapes from '@/hooks/useVapes';
 import type { Vape } from '@/types/vape';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { BRAND_ORDER, DEFAULT_BRAND, type Brand } from '../VapeRender';
+import { useSearch } from '@/context/SearchContext';
 const API_URL = import.meta.env.VITE_API_URL;
 const VapeList = () => {
     const { vapes, isLoading, error, refetch } = useVapes();
@@ -12,7 +14,33 @@ const VapeList = () => {
         flavor: '',
         description: '',
     });
+    const [activeBrand, setActiveBrand] = useState<Brand>(DEFAULT_BRAND);
+    const {search} = useSearch();
 
+    const isBrand = (value: string): value is Brand => BRAND_ORDER.includes(value as Brand);
+    const getBrandIndex = (brand: string) =>
+        isBrand(brand) ? BRAND_ORDER.indexOf(brand) : Number.MAX_SAFE_INTEGER;
+
+    const filteredVapes = useMemo(() => {
+        let result = [...vapes];
+
+        if (activeBrand !== 'ВСЕ') {
+            result = result.filter((v) => v.brand === activeBrand);
+        }
+
+        if (search.trim()) {
+            const q = search.toLowerCase();
+            result = result.filter(
+                (v) => v.flavor.toLowerCase().includes(q) || v.name.toLowerCase().includes(q)
+            );
+        }
+
+        return result.sort((a, b) => {
+            const brandDiff = getBrandIndex(a.brand) - getBrandIndex(b.brand);
+            if (brandDiff !== 0) return brandDiff;
+            return b.price - a.price;
+        });
+    }, [vapes, activeBrand, search]);
     if (isLoading) return <h2 className="p-4">Loading...</h2>;
     if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
     const handleDelete = async (id: number) => {
@@ -79,7 +107,7 @@ const VapeList = () => {
                 </thead>
 
                 <tbody>
-                    {vapes.map((vape, index) => (
+                    {filteredVapes.map((vape, index) => (
                         <tr
                             key={vape.id}
                             className="
@@ -109,7 +137,6 @@ const VapeList = () => {
                             <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">
                                 {editId === vape.id ? (
                                     <input
-                                        
                                         className="w-full rounded-md border pl-2 py-1 text-sm"
                                         value={editData.flavor}
                                         onChange={(e) =>
@@ -146,9 +173,8 @@ const VapeList = () => {
                                         }
                                     />
                                 ) : (
-                                    vape.price + "₽"
+                                    vape.price + '₽'
                                 )}
-                                
                             </td>
 
                             <td className="p-3 border-b border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-gray-100">

@@ -6,10 +6,10 @@ import { useSearch } from '@/context/SearchContext';
 interface VapeRenderProps {
     vapes: Vape[];
 }
-type Brand = 'ВСЕ' | 'WAKA' | 'ELFBAR' | 'LOST MARY' | 'PUFFMI' | 'HQD' | 'PLONQ';
-const BRAND_ORDER: Brand[] = ['WAKA', 'ELFBAR', 'LOST MARY', 'PUFFMI', 'HQD', 'PLONQ'];
+export type Brand = 'ВСЕ' | 'WAKA' | 'ELFBAR' | 'LOST MARY' | 'PUFFMI' | 'HQD' | 'PLONQ';
+export const BRAND_ORDER: Brand[] = ['WAKA', 'ELFBAR', 'LOST MARY', 'PUFFMI', 'HQD', 'PLONQ'];
 
-const DEFAULT_BRAND: Brand = 'ВСЕ';
+export const DEFAULT_BRAND: Brand = 'ВСЕ';
 
 const VapeRender: React.FC<VapeRenderProps> = ({ vapes }) => {
     const { search } = useSearch();
