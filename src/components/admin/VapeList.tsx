@@ -1,7 +1,7 @@
 import useVapes from '@/hooks/useVapes';
 import type { Vape } from '@/types/vape';
 import { useMemo, useState } from 'react';
-import { BRAND_ORDER, DEFAULT_BRAND, type Brand } from '../VapeRender';
+import { BRAND_ORDER, type Brand } from '../VapeRender';
 import { useSearch } from '@/context/SearchContext';
 const API_URL = import.meta.env.VITE_API_URL;
 const VapeList = () => {
@@ -14,7 +14,6 @@ const VapeList = () => {
         flavor: '',
         description: '',
     });
-    const [activeBrand, setActiveBrand] = useState<Brand>(DEFAULT_BRAND);
     const {search} = useSearch();
 
     const isBrand = (value: string): value is Brand => BRAND_ORDER.includes(value as Brand);
@@ -23,10 +22,6 @@ const VapeList = () => {
 
     const filteredVapes = useMemo(() => {
         let result = [...vapes];
-
-        if (activeBrand !== 'ВСЕ') {
-            result = result.filter((v) => v.brand === activeBrand);
-        }
 
         if (search.trim()) {
             const q = search.toLowerCase();
@@ -40,7 +35,7 @@ const VapeList = () => {
             if (brandDiff !== 0) return brandDiff;
             return b.price - a.price;
         });
-    }, [vapes, activeBrand, search]);
+    }, [vapes, search]);
     if (isLoading) return <h2 className="p-4">Loading...</h2>;
     if (error) return <p className="p-4 text-red-500">Error: {error}</p>;
     const handleDelete = async (id: number) => {
