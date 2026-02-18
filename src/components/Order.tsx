@@ -12,6 +12,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
     const orderItems = cart.map((vape: Vape) => {
         return {
             id: vape.id,
+            flavor: vape.flavor,
             name: vape.name,
             price: vape.price,
             quantity: vape.quantity,
