@@ -73,7 +73,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                 сообщение с уточнением заказа.
             </p>
             <p>
-                Подтверждение не должно занимать больше 2-3 минут. Но если больше, прошу подождать.
+                Подтверждение не должно занимать больше 2-3 минут.
             </p>
             <div>
                 <h2 className="mt-4">Выберите способ получения</h2>
@@ -101,16 +101,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                             <label htmlFor=""></label>
                         </div>
                     ) : (
-                        <div>
-                            <input
-                                required
-                                className="w-full mt-4 py-2 px-4 border rounded-sm"
-                                type="text"
-                                placeholder="Введите адрес доставки"
-                                onChange={(e) => setAddress(e.target.value)}
-                                value={address}
-                            />
-                        </div>
+                        <p className='text-red-500'>Доставка недоступна</p>
                     )}
 
                     <label>Данные о статусе заказе отправить на:</label>
@@ -134,7 +125,7 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
                         required
                         className="lg:w-1/3 py-2 px-4 border rounded-sm"
                         type={contactType === 'email' ? 'email' : 'text'}
-                        placeholder={contactType === 'email' ? 'Ваша почта' : 'Ваш телеграм'}
+                        placeholder={contactType === 'email' ? 'Ваша почта' : 'Ваш ник в телеграм без @'}
                         value={contact}
                         onChange={(e) => setContact(e.target.value)}
                     />
