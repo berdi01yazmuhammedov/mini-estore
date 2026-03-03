@@ -16,6 +16,7 @@ import AdminLogin from './pages/AdminLogin.tsx';
 import ProtectedRoute from './components/admin/ProtectedRoute.tsx';
 import { SearchProvider } from './context/SearchContext.tsx';
 import ProductPage from './pages/ProductPage.tsx';
+import NotFound from './pages/NotFound.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
@@ -42,7 +43,7 @@ createRoot(document.getElementById('root')!).render(
                             <Route path="orders" element={<Orders />} />
                         </Route>
                         <Route path="order-success" element={<OrderSuccess />} />
-                        <Route path="*" element={<h1>404</h1>} /> // ADD NOT FOUND PAGE
+                        <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
