@@ -45,7 +45,7 @@ const NotFound = () => {
           <div className="relative w-[clamp(120px,18vw,200px)] h-[clamp(120px,18vw,200px)] rounded-full overflow-hidden flex-shrink-0 animate-breathe shadow-[0_0_0_5px_rgba(255,255,255,0.9),0_0_30px_rgba(255,255,255,0.2),0_0_60px_rgba(255,255,255,0.08)]">
             <video
               ref={videoRef}
-              src="/head.mp4"
+              src="/cat.mp4"
               autoPlay
               loop
               muted // старт с мутом, чтобы разрешил autoplay

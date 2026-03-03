@@ -43,8 +43,8 @@ createRoot(document.getElementById('root')!).render(
                             <Route path="orders" element={<Orders />} />
                         </Route>
                         <Route path="order-success" element={<OrderSuccess />} />
-                        <Route path="*" element={<NotFound />} />
                     </Route>
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </SearchProvider>
