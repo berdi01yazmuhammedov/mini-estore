@@ -72,7 +72,7 @@ const AddVape = () => {
                 fileRef.current.value = '';
             }
             setDescription('');
-        } catch (error) {
+        } catch {
             alert('Произошла ошибка при добавлении заказа');
         } finally {
             setLoading(false);

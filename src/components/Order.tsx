@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/store/hooks';
 import type { Vape } from '@/types/vape';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from './ui/button';
 const API_URL = import.meta.env.VITE_API_URL;
 interface OrderProps {
     cart: Vape[];
@@ -24,8 +25,8 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
     const [loading, setLoading] = useState(false);
-
     const navigate = useNavigate();
+
     const handlePickupChange = (type: PickupType) => {
         setIsPickup(type);
         if (type === 'Самовывоз') {
@@ -59,87 +60,110 @@ const Order: React.FC<OrderProps> = ({ cart }) => {
 
             dispatch(clearCart());
             navigate('/order-success');
-        } catch (error) {
+        } catch {
             alert('Произошла ошибка при обработке заказа');
         } finally {
             setLoading(false);
         }
     };
     return (
-        <div className="mx-auto">
-            <h1>Оформление заказа</h1>
-            <p>
-                При нажатии на кнопку "Заказать" на Ваш телеграм или email будет отправлено
-                сообщение с уточнением заказа.
-            </p>
-            <p>
-                Подтверждение не должно занимать больше 2-3 минут.
-            </p>
-            <div>
-                <h2 className="mt-4">Выберите способ получения</h2>
-                <div className="mt-2 flex gap-4">
-                    <button
-                        onClick={() => handlePickupChange('Самовывоз')}
-                        className={`py-2 px-2 border-2 rounded-md cursor-pointer hover:bg-secondary/80 ${isPickup === 'Самовывоз' ? 'isPickup' : ''}`}
-                    >
-                        Самовывоз
-                    </button>
-                    <button
-                        onClick={() => handlePickupChange('Доставка')}
-                        className={`py-2 px-2 border-2 rounded-md cursor-pointer hover:bg-secondary/80 ${isPickup === 'Доставка' ? 'isPickup' : ''}`}
-                    >
-                        Доставка
-                    </button>
-                </div>
-                <form className="mt-4 flex flex-col gap-4" onSubmit={handleSubmit}>
-                    {isPickup === 'Самовывоз' ? (
-                        <div className="mt-2">
-                            <h2>
-                                Можно получить в день заказа или, в удобный Вам день также на{' '}
-                                <span className="text-red-400">Площади Мужества.</span>
-                            </h2>
-                            <label htmlFor=""></label>
-                        </div>
-                    ) : (
-                        <p className='text-red-500'>Доставка недоступна</p>
-                    )}
+        <section className="rounded-[32px] bg-[#f5f5f7] p-4 sm:p-6 lg:p-8">
+            <div className="space-y-3">
+                <h2 className="text-2xl font-semibold tracking-tight text-[#111111] sm:text-3xl">
+                    Оформление заказа
+                </h2>
+                <p className="text-sm leading-6 text-[#86868b] sm:text-base">
+                    После подтверждения мы свяжемся с вами в Telegram или по email, чтобы быстро
+                    уточнить детали заказа.
+                </p>
+            </div>
 
-                    <label>Данные о статусе заказе отправить на:</label>
-                    <div className="flex gap-2">
-                        <button
-                            type="button"
-                            onClick={() => setContactType('email')}
-                            className={`cursor-pointer px-2 py-1 border rounded ${contactType === 'email' ? 'bg-blue-500 text-white' : ''}`}
-                        >
-                            Почту
-                        </button>
+            <form className="mt-8 flex flex-col gap-6" onSubmit={handleSubmit}>
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-[#111111]">Способ получения</label>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        {(['Самовывоз', 'Доставка'] as PickupType[]).map((type) => {
+                            const active = isPickup === type;
+                            return (
+                                <button
+                                    key={type}
+                                    type="button"
+                                    onClick={() => handlePickupChange(type)}
+                                    className={`min-h-11 rounded-[22px] px-4 text-sm font-medium transition-all duration-200 ${
+                                        active
+                                            ? 'bg-[#111111] text-white'
+                                            : 'bg-white text-[#111111] hover:scale-[1.02]'
+                                    }`}
+                                >
+                                    {type}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    {isPickup === 'Самовывоз' ? (
+                        <p className="rounded-[24px] bg-white px-4 py-4 text-sm leading-6 text-[#86868b]">
+                            Самовывоз доступен в удобный для вас день на Площади Мужества.
+                            Подтверждение обычно занимает 2–3 минуты.
+                        </p>
+                    ) : (
+                        <div className="space-y-3">
+                            <p className="rounded-[24px] bg-white px-4 py-4 text-sm leading-6 text-[#86868b]">
+                                Доставка сейчас ограничена. Оставьте адрес, и мы подтвердим
+                                возможность вручную.
+                            </p>
+                            <input
+                                className="min-h-12 w-full rounded-[22px] border border-black/5 bg-white px-4 text-base text-[#111111] outline-none placeholder:text-[#86868b]"
+                                type="text"
+                                placeholder="Адрес доставки"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-[#111111]">
+                        Куда отправить статус заказа
+                    </label>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                         <button
                             type="button"
                             onClick={() => setContactType('telegram')}
-                            className={`cursor-pointer px-2 py-1 border rounded ${contactType === 'telegram' ? 'bg-blue-500 text-white' : ''}`}
+                            className={`min-h-11 rounded-[22px] px-4 text-sm font-medium transition-all duration-200 ${
+                                contactType === 'telegram'
+                                    ? 'bg-[#111111] text-white'
+                                    : 'bg-white text-[#111111] hover:scale-[1.02]'
+                            }`}
                         >
-                            Телеграм
+                            Telegram
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setContactType('email')}
+                            className={`min-h-11 rounded-[22px] px-4 text-sm font-medium transition-all duration-200 ${
+                                contactType === 'email'
+                                    ? 'bg-[#111111] text-white'
+                                    : 'bg-white text-[#111111] hover:scale-[1.02]'
+                            }`}
+                        >
+                            Email
                         </button>
                     </div>
                     <input
                         required
-                        className="lg:w-1/3 py-2 px-4 border rounded-sm"
+                        className="min-h-12 w-full rounded-[22px] border border-black/5 bg-white px-4 text-base text-[#111111] outline-none placeholder:text-[#86868b]"
                         type={contactType === 'email' ? 'email' : 'text'}
-                        placeholder={contactType === 'email' ? 'Ваша почта' : 'Ваш ник в телеграм без @'}
+                        placeholder={contactType === 'email' ? 'Ваша почта' : 'Ваш Telegram без @'}
                         value={contact}
                         onChange={(e) => setContact(e.target.value)}
                     />
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`cursor-pointer lg:w-1/3 px-4 py-2 font-bold border rounded
-${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500 hover:text-white'}`}
-                    >
-                        {loading ? 'Оформляем...' : 'Заказать'}
-                    </button>
-                </form>
-            </div>
-        </div>
+                </div>
+
+                <Button type="submit" disabled={loading} className="w-full">
+                    {loading ? 'Оформляем…' : 'Заказать'}
+                </Button>
+            </form>
+        </section>
     );
 };
 

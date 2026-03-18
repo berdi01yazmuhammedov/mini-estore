@@ -10,21 +10,21 @@ const ProductPage = () => {
     const dispatch = useAppDispatch();
     const { currentVape, isLoading } = useAppSelector((state) => state.vapes);
     useEffect(() => {
-            dispatch(fetchVapeById(Number(id)));
+        dispatch(fetchVapeById(Number(id)));
     }, [id]);
     if (isLoading) {
-        return <div className="text-center py-10">Загрузка...</div>;
+        return <div className="py-16 text-center text-sm text-[#86868b]">Загрузка...</div>;
     }
     if (!currentVape) {
         return (
             <div className="mx-auto flex min-h-[60vh] max-w-4xl flex-col items-center justify-center gap-4 px-4 text-center">
-                <h1 className="text-2xl font-semibold">Товар не найден</h1>
-                <p className="text-sm text-muted-foreground">
-                    Возможно, товар был удален или ссылка устарела.
+                <h1 className="text-2xl font-semibold text-[#111111]">Товар не найден</h1>
+                <p className="text-sm text-[#86868b]">
+                    Возможно, товар был удалён или ссылка устарела.
                 </p>
                 <Link
                     to="/"
-                    className="rounded-full border border-border px-4 py-2 text-sm font-medium transition hover:bg-accent"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-black/10 px-5 text-sm font-medium text-[#111111] transition-all duration-200 hover:bg-[#f5f5f7]"
                 >
                     Вернуться в каталог
                 </Link>
@@ -33,73 +33,81 @@ const ProductPage = () => {
     }
 
     return (
-        <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-16 pt-8 md:pt-12">
-            <Link
-                to="/"
-                className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
-            >
-                <ChevronLeft className="h-4 w-4" />
-                Назад в каталог
-            </Link>
-
-            <div className="grid items-start gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-                <div className="rounded-3xl border border-border bg-card p-4 shadow-sm md:p-8">
-                    <div className="aspect-square w-full overflow-hidden rounded-2xl bg-muted/40">
-                        <img
-                            src={currentVape.image}
-                            alt={currentVape.name}
-                            className="h-full w-full object-contain p-4"
-                        />
-                    </div>
-                    <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        <span className="rounded-full bg-secondary px-3 py-1">{currentVape.brand}</span>
-                        <span className="rounded-full bg-secondary px-3 py-1">
-                            {currentVape.flavor}
-                        </span>
-                        <span className="rounded-full bg-secondary px-3 py-1">
-                            {currentVape.strength}
-                        </span>
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-6">
-                    <div className="space-y-3">
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                            {currentVape.brand}
-                        </p>
-                        <h1 className="text-3xl font-semibold leading-tight md:text-4xl">
-                            {currentVape.name}
-                        </h1>
+        <section className="px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-12">
+            <div className="mx-auto flex max-w-[1440px] flex-col gap-8">
+                <Link
+                    to="/"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-[#86868b] transition-all duration-200 hover:text-[#111111]"
+                >
+                    <ChevronLeft className="h-4 w-4" />
+                    Назад в каталог
+                </Link>
+                <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+                    <div className="rounded-[32px] bg-[#f5f5f7] p-4 sm:p-6 lg:p-8">
+                        <div className="flex aspect-square w-full items-center justify-center rounded-[28px] bg-white p-6 sm:p-10">
+                            <img
+                                src={currentVape.image}
+                                alt={currentVape.name}
+                                className="h-full w-full object-contain"
+                            />
+                        </div>
                     </div>
 
-                    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-xs uppercase text-muted-foreground">Цена</p>
-                                <p className="text-2xl font-semibold text-primary">
-                                    {currentVape.price} ₽
+                    <div className="flex flex-col gap-5">
+                        <div className="space-y-3">
+                            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#86868b]">
+                                {currentVape.brand}
+                            </p>
+                            <h1 className="text-3xl font-semibold tracking-tight text-[#111111] sm:text-4xl lg:text-5xl">
+                                {currentVape.name}
+                            </h1>
+                            <p className="max-w-xl text-sm leading-6 text-[#86868b] sm:text-base">
+                                {currentVape.description || currentVape.flavor}
+                            </p>
+                        </div>
+                        <div className="rounded-[28px] bg-[#f5f5f7] p-5 sm:p-6">
+                            <p className="text-sm text-[#86868b]">Цена</p>
+                            <p className="mt-2 text-3xl font-semibold tracking-tight text-[#111111]">
+                                {currentVape.price} ₽
+                            </p>
+                            <div className="mt-5">
+                                <VapeFooterActions product={currentVape} />
+                            </div>
+                        </div>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            <div className="rounded-[24px] bg-[#f5f5f7] p-4">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                                    Вкус
+                                </p>
+                                <p className="mt-2 text-lg font-semibold text-[#111111]">
+                                    {currentVape.flavor}
                                 </p>
                             </div>
-                            <VapeFooterActions product={currentVape} />
-                        </div>
-                    </div>
-
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="rounded-2xl border border-border bg-card p-4">
-                            <p className="text-xs uppercase text-muted-foreground">Вкус</p>
-                            <p className="mt-1 text-lg font-semibold">{currentVape.flavor}</p>
-                        </div>
-                        <div className="rounded-2xl border border-border bg-card p-4">
-                            <p className="text-xs uppercase text-muted-foreground">Крепость</p>
-                            <p className="mt-1 text-lg font-semibold">{currentVape.strength}</p>
-                        </div>
-                        <div className="rounded-2xl border border-border bg-card p-4">
-                            <p className="text-xs uppercase text-muted-foreground">Затяжки</p>
-                            <p className="mt-1 text-lg font-semibold">{currentVape.puffs}</p>
-                        </div>
-                        <div className="rounded-2xl border border-border bg-card p-4">
-                            <p className="text-xs uppercase text-muted-foreground">Бренд</p>
-                            <p className="mt-1 text-lg font-semibold">{currentVape.brand}</p>
+                            <div className="rounded-[24px] bg-[#f5f5f7] p-4">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                                    Крепость
+                                </p>
+                                <p className="mt-2 text-lg font-semibold text-[#111111]">
+                                    {currentVape.strength}
+                                </p>
+                            </div>
+                            <div className="rounded-[24px] bg-[#f5f5f7] p-4">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                                    Затяжки
+                                </p>
+                                <p className="mt-2 text-lg font-semibold text-[#111111]">
+                                    {currentVape.puffs}
+                                </p>
+                            </div>
+                            <div className="rounded-[24px] bg-[#f5f5f7] p-4">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[#86868b]">
+                                    Наличие
+                                </p>
+                                <p className="mt-2 text-lg font-semibold text-[#111111]">
+                                    {currentVape.stock} шт.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

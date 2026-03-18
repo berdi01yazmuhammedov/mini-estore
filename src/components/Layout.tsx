@@ -1,17 +1,18 @@
-import Header from './Header';
+import Header from './layout/Header';
 import { Outlet } from 'react-router-dom';
 import ScrollToTop from './ui/scrollToTop';
+import Footer from './layout/Footer';
 
 const Layout = () => {
     return (
-            <div className="bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200">
-                <Header />
-
-                <main className="container mx-auto px-2 py-2 lg:px-6">
-                    <Outlet />
-                </main>
-                <ScrollToTop />
-            </div>
+        <div className="min-h-screen bg-white text-[#111111] antialiased">
+            <Header />
+            <main>
+                <Outlet />
+            </main>
+            <Footer />
+            <ScrollToTop />
+        </div>
     );
 };
 

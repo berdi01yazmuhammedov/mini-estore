@@ -1,5 +1,9 @@
+interface DeliveryAvailableProps {
+    address: string;
+    setAddress: (value: string) => void;
+}
 
-const deliveryAvailable = ({address, setAddress}: any) => {
+const DeliveryAvailable = ({ address, setAddress }: DeliveryAvailableProps) => {
     return (
         <div>
             <input
@@ -14,4 +18,4 @@ const deliveryAvailable = ({address, setAddress}: any) => {
     );
 };
 
-export default deliveryAvailable;
+export default DeliveryAvailable;

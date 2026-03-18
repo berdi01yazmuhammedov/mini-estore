@@ -20,7 +20,7 @@ export const fetchVapeById = createAsyncThunk<Vape, number, { rejectValue: strin
                 throw new Error('Vape not found');
             }
             return await res.json();
-        } catch (error) {
+        } catch {
             return rejectWithValue('Не удалось загрузить товар');
         }
     }

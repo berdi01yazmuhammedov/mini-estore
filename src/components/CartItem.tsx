@@ -15,37 +15,47 @@ const CartItem = ({ item }: Props) => {
     if (!cartItem) return null;
 
     return (
-        <div className="w-full flex flex-col lg:flex-row items-center gap-4 p-4 border-b dark:border-zinc-700">
-            <div className="flex flex-1">
-            <img src={cartItem.image} className="w-20 h-20 object-contain" alt={item.name} />
-                <div>
-                    <h3 className="font-medium">{item.name}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{item.flavor}</p>
-                    <p className="font-semibold mt-1">{item.price} ₽</p>
+        <div className="flex flex-col gap-4 rounded-[28px] bg-[#f5f5f7] p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[24px] bg-white p-3">
+                    <img
+                        src={cartItem.image}
+                        className="h-full w-full object-contain"
+                        alt={item.name}
+                    />
+                </div>
+                <div className="space-y-1">
+                    <h3 className="text-lg font-semibold text-[#111111]">{item.name}</h3>
+                    <p className="text-sm text-[#86868b]">{item.flavor}</p>
+                    <p className="text-base font-semibold text-[#111111]">{item.price} ₽</p>
                 </div>
             </div>
+            <div className="flex items-center justify-between gap-3 sm:justify-end">
+                <div className="flex items-center gap-2 rounded-full bg-white p-1">
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-10 w-10"
+                        onClick={() => dispatch(removeOneFromCart(item.id))}
+                    >
+                        −
+                    </Button>
+                    <span className="min-w-8 text-center text-sm font-semibold text-[#111111]">
+                        {cartItem.quantity}
+                    </span>
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        className="h-10 w-10"
+                        disabled={cartItem.quantity >= item.stock}
+                        onClick={() => dispatch(addToCart(item))}
+                    >
+                        +
+                    </Button>
+                </div>
 
-            <div className="flex items-center gap-2 self-end">
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => dispatch(removeOneFromCart(item.id))}
-                >
-                    −
-                </Button>
-
-                <span className="min-w-[20px] text-center">{cartItem.quantity}</span>
-
-                <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={cartItem.quantity >= item.stock}
-                    onClick={() => dispatch(addToCart(item))}
-                >
-                    +
-                </Button>
                 <Button variant="ghost" size="icon" onClick={() => dispatch(removeItem(item.id))}>
-                    <Trash2 className="w-5 h-5 text-red-500" />
+                    <Trash2 className="h-5 w-5 text-[#86868b]" />
                 </Button>
             </div>
         </div>
