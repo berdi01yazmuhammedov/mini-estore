@@ -1,4 +1,3 @@
-import Hero from './components/layout/Hero.tsx';
 import ProductShowcase from './components/product/ProductShowcase.tsx';
 import useVapes from './hooks/useVapes.ts';
 
@@ -19,14 +18,8 @@ function App() {
             </div>
         );
     }
-    const featuredProduct = [...vapes].sort((a, b) => b.price - a.price)[0];
 
-    return (
-        <>
-            <Hero featuredProduct={featuredProduct} />
-            <ProductShowcase products={vapes} />
-        </>
-    );
+     return <ProductShowcase products={vapes} />;
 }
 
 export default App;

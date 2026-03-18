@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import type { Vape } from '@/types/vape';
 import { useSearch } from '@/context/SearchContext';
 import ProductGrid from './ProductGrid';
-import SectionHeading from '@/components/ui/SectionHeading';
 
 const BRANDS = ['ВСЕ', 'WAKA', 'ELFBAR', 'LOST MARY', 'PUFFMI', 'HQD', 'PLONQ'] as const;
 type Brand = (typeof BRANDS)[number];
@@ -31,16 +30,17 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
     }, [activeBrand, products, search]);
 
     return (
-        <div className="px-4 py-6 sm:px-6 lg:px-10">
-            <div className="mx-auto max-w-[1440px] rounded-[28px] bg-white">
-                <div className="flex flex-col gap-6 rounded-[28px] border border-black/5 bg-white px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-                    <SectionHeading
-                        eyebrow="Filter"
-                        title="Тонкая навигация по брендам"
-                        description="Фильтрация остаётся лёгкой и тактильно удобной: крупные зоны касания, минимум шума и быстрый выбор на мобильных устройствах."
-                    />
+        <section className="px-4 py-4 sm:px-6 sm:py-6 lg:px-10 lg:py-8">
+            <div className="mx-auto max-w-[1440px]">
+                <div className="flex flex-col gap-4 sm:gap-5">
+                    <div className="flex items-center justify-between gap-4">
+                        <h1 className="text-2xl font-semibold tracking-tight text-[#111111] sm:text-3xl">
+                            Каталог
+                        </h1>
+                        <span className="text-sm text-[#86868b]">{filteredProducts.length}</span>
+                    </div>
 
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         {BRANDS.map((brand) => {
                             const isActive = activeBrand === brand;
 
@@ -49,7 +49,7 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
                                     key={brand}
                                     type="button"
                                     onClick={() => setActiveBrand(brand)}
-                                    className={`min-h-11 rounded-full px-4 text-sm font-medium transition-all duration-200 ${
+                                    className={`min-h-11 shrink-0 rounded-full px-4 text-sm font-medium transition-all duration-200 ${
                                         isActive
                                             ? 'bg-[#111111] text-white'
                                             : 'bg-[#f5f5f7] text-[#111111] hover:scale-[1.02] hover:bg-[#ededf0]'
@@ -61,10 +61,10 @@ const ProductShowcase = ({ products }: ProductShowcaseProps) => {
                         })}
                     </div>
                 </div>
-            </div>
 
-            <ProductGrid products={filteredProducts} />
-        </div>
+                <ProductGrid products={filteredProducts} />
+            </div>
+        </section>
     );
 };
 
