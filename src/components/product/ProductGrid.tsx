@@ -18,7 +18,7 @@ const ProductGrid = ({ products }: ProductGridProps) => {
 
     return (
         <section id="catalog" className="pb-8 pt-4 sm:pb-10">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3 2xl:grid-cols-4">
                 {products.map((vape) => (
                     <ProductCard key={vape.id} vape={vape} />
                 ))}
