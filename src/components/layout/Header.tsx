@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Search, ShoppingBag } from 'lucide-react';
+import { Search, ShoppingBag, X } from 'lucide-react';
 import { useAppSelector } from '@/store/hooks';
 import { useSearch } from '@/context/SearchContext';
 
@@ -24,13 +24,20 @@ const Header = () => {
 
             <div className="ml-auto flex items-center gap-2 sm:gap-3">
                 <label className="relative w-[min(52vw,240px)] sm:w-[240px] lg:w-[280px]">
-                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#86868b]" />
                     <input
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
-                        placeholder="Поиск"
+                        placeholder="Поиск..."
                         className="h-11 w-full rounded-full border border-black/5 bg-[#f5f5f7] pl-10 pr-4 text-sm text-[#111111] outline-none transition-all duration-200 placeholder:text-[#86868b] focus:border-black/10 focus:bg-white"
                     />
+                    {search ? (
+                        <X
+                            className="cursor-pointer absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#86868b]"
+                            onClick={() => setSearch('')}
+                        />
+                    ) : (
+                        <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#86868b]" />
+                    )}
                 </label>
                 {isAdmin && (
                     <Link to="/admin" className="border py-1 px-3 rounded-md text-red-500">
