@@ -19,7 +19,7 @@ const Header = () => {
                 to="/"
                 className="shrink-0 text-sm font-semibold tracking-[0.2em] text-[#111111] uppercase"
             >
-                Berdi
+                Vape-store
             </Link>
 
             <div className="ml-auto flex items-center gap-2 sm:gap-3">
